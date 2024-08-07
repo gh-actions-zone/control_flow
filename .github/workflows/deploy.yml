@@ -9,11 +9,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Cache dependencies
+        id: cache # giving an id allows us to reference this step later
         uses: actions/cache@v4
         with:
-          path: ~/.npm
+          path: node_modules # node_modules contains the project binaries
           key: deps-node-modules-${{ hashFiles('**/package.lock.json') }}
       - name: Install dependencies
+        # now we can check for a cache hit to save time installing dependencies if the cache was used
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Lint codebase
         run: npm run lint
@@ -24,11 +27,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Cache dependencies
+        id: cache
         uses: actions/cache@v4
         with:
-          path: ~/.npm
+          path: node_modules
           key: deps-node-modules-${{ hashFiles('**/package.lock.json') }}
       - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Test project
         id: run-tests
@@ -47,11 +52,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Cache dependencies
+        id: cache
         uses: actions/cache@v4
         with:
-          path: ~/.npm
+          path: node_modules
           key: deps-node-modules-${{ hashFiles('**/package.lock.json') }}
       - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Deploy project
         run: npm run build

@@ -72,3 +72,14 @@ jobs:
         run: ls -la
       - name: Confirm deployment
         run: echo "Deployment successful :)"
+  report:
+    # run this job after the others have completed - ommitting this will run reports in parallel
+    needs: [lint, test, build, deploy]
+    # failure() condition states this job will run if any other job fails
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output error report
+        run: |
+          echo "Generating error report..."
+          echo "Saving error report..."

@@ -1,0 +1,25 @@
+---
+name: Matrix Demo
+on: push
+permissions: read-all
+jobs:
+  build:
+    # a matrix is an array of values to run the workflow with
+    # this creates separate jobs for each combination of values
+    # e.g this workflow creates 6 jobs to cover multiple OSs and Node versions
+    strategy:
+      matrix:
+        node-version: [12, 18, 21]
+        operating-system: [ubuntu-latest, windows-latest] # workflow runs on 2 runners, installing 3 versions of NodeJS on each
+    runs-on: ${{ matrix.operating-system }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install NodeJS
+        uses: actions/setup-node
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Build project
+        run: npm run build

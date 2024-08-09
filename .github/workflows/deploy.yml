@@ -72,6 +72,9 @@ jobs:
     uses: ./.github/workflows/reusable.yml # path relative to project root
     with:
       artifact-name: dist-files # pas in dist-files to the reusable artifact
+    # using secrets in a reusable workflow
+    # secrets:
+    #   some-secret: ${{ secrets.some-secret }}
   report:
     # run this job after the others have completed - ommitting this will run reports in parallel
     needs: [lint, test, build, deploy]

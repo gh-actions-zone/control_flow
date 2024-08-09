@@ -69,16 +69,9 @@ jobs:
           path: dist
   deploy:
     needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: dist-files
-      - name: Output directory contents
-        run: ls -la
-      - name: Confirm deployment
-        run: echo "Deployment successful :)"
+    uses: ./.github/workflows/reusable.yml # path relative to project root
+    with:
+      artifact-name: dist-files # pas in dist-files to the reusable artifact
   report:
     # run this job after the others have completed - ommitting this will run reports in parallel
     needs: [lint, test, build, deploy]

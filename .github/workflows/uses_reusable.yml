@@ -1,7 +1,0 @@
----
-name: Uses Reusable Workflow
-on: push
-permissions: read-all
-jobs:
-  deploy:
-    uses: ./.github/workflows/reusable.yml # path relative to project root

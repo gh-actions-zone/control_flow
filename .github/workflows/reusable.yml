@@ -1,10 +1,25 @@
 ---
 name: Reusable Workflow Demo
-on: workflow_call # opposite to manual process of workflow_dispatch
+on:
+  # opposite to manual process of workflow_dispatch
+  workflow_call:
+    # inputs are like function arguments, each having a set of available options
+    inputs:
+      artifact-name:
+        description: The name of the deployable artifact
+        required: false
+        default: dist
+        type: string
 permissions: read-all
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Get deployable artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }} # dynamically fetch the artifacts by name
+      - name: List files
+        run: ls -la
       - name: Deploy stuff
         run: echo "Deploying stuff!"

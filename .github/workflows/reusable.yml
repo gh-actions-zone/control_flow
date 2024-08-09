@@ -10,6 +10,10 @@ on:
         required: false
         default: dist
         type: string
+    outputs:
+      result:
+        description: The result of the deployment operation
+        value: ${{ jobs.deploy.outputs.outcome }}
     # adding secrets to a reusable workflow
     # secrets:
     #   some-secret:
@@ -17,6 +21,8 @@ on:
 permissions: read-all
 jobs:
   deploy:
+    outputs:
+      outcome: ${{ steps.set-deploy-result.outputs.deploy-result }}
     runs-on: ubuntu-latest
     steps:
       - name: Get deployable artifact
@@ -27,3 +33,6 @@ jobs:
         run: ls -la
       - name: Deploy stuff
         run: echo "Deploying stuff!"
+      - name: Set result output
+        id: set-deploy-result
+        run: echo "deploy-result=success" >> $GITHUB_OUTPUT

@@ -21,7 +21,6 @@ jobs:
       - name: Lint codebase
         run: npm run lint
   test:
-    needs: lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -75,6 +74,12 @@ jobs:
     # using secrets in a reusable workflow
     # secrets:
     #   some-secret: ${{ secrets.some-secret }}
+  view-deploy-result:
+    needs: deploy
+    runs-on: ubunt-latest
+    steps:
+      - name: Print deployment output
+        run: echo "${{ needs.deploy.outputs.result }}"
   report:
     # run this job after the others have completed - ommitting this will run reports in parallel
     needs: [lint, test, build, deploy]

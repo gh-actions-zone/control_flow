@@ -13,6 +13,14 @@ jobs:
       matrix:
         node-version: [12, 18, 21]
         operating-system: [ubuntu-latest, windows-latest] # workflow runs on 2 runners, installing 3 versions of NodeJS on each
+        # this include setting allows you add additional key/values for configs you may want to keep outside the matrix
+        include:
+          - node-version: 14
+            operating-system: ubuntu-latest # in this scenario we only want to test NodeJS v14 on Ubuntu, not Windows
+        # this exclude setting stops a configuration from running
+        exclude:
+          - node-version: 12
+            operating-system: windows-latest # in this scenario we don't test NodeJS v12 on Windows, only Ubuntu
     runs-on: ${{ matrix.operating-system }}
     steps:
       - name: Checkout code

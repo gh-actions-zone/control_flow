@@ -4,6 +4,8 @@ on: push
 permissions: read-all
 jobs:
   build:
+    # continue on error allows jobs to still run even if one fails
+    continue-on-error: true
     # a matrix is an array of values to run the workflow with
     # this creates separate jobs for each combination of values
     # e.g this workflow creates 6 jobs to cover multiple OSs and Node versions

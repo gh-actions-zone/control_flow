@@ -1,0 +1,10 @@
+---
+name: Reusable Workflow Demo
+on: workflow_call # opposite to manual process of workflow_dispatch
+permissions: read-all
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy stuff
+        run: echo "Deploying stuff!"
